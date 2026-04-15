@@ -49,3 +49,19 @@ class SendingMessages(models.Model):
         verbose_name_plural = "Рассылки"
         ordering = ["message"]
 
+class MailingAttempts(models.Model):
+    start_time = models.DateTimeField(verbose_name="Дата и время начала отправки")
+    STATUS_CHOICES = [
+        ('successful', 'Успешно'),
+        ('Unsuccessful', 'Неуспешно'),
+    ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, verbose_name="Статус")
+    server_response = models.CharField(null=True, blank=True, verbose_name="Ответ почтового сервера")
+    sending_messages = models.ForeignKey(SendingMessages, on_delete=models.DO_NOTHING, related_name='sending_messages', verbose_name="Рассылка сообщений")
+
+    def __str__(self):
+        return f"Рассылка:{self.sending_messages} Дата отправки:{self.start_time} Статус:{self.status}"
+    class Meta:
+        verbose_name = "Попытка рассылок"
+        verbose_name_plural = "Попытки рассылок"
+        ordering = ["start_time"]
