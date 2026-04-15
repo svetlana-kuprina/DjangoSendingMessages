@@ -1,3 +1,5 @@
+from tkinter.constants import CASCADE
+
 from django.db import models
 
 class Client(models.Model):
@@ -14,6 +16,7 @@ class Client(models.Model):
         verbose_name_plural = "Получатели рассылки"
         ordering = ["email"]
 
+
 class Message(models.Model):
     message_subject = models.CharField(max_length=150, null=True, blank=True, verbose_name="Тема письма")
     body = models.TextField(null=True, blank=True, verbose_name="Тело письма")
@@ -25,7 +28,24 @@ class Message(models.Model):
         verbose_name_plural = "Сообщения"
         ordering = ["message_subject"]
 
+
 class SendingMessages(models.Model):
     start_time = models.DateTimeField(verbose_name="Дата и время начала отправки")
     end_time = models.DateTimeField(verbose_name="Дата и время окончания отправки")
-    status = models.CharField()
+    STATUS_CHOICES = [
+        ('created', 'Создана'),
+        ('launched', 'Запущена'),
+        ('completed', 'Завершена'),
+    ]
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='created', verbose_name="Статус")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='sending_messages', verbose_name="Сообщение")
+    client = models.ManyToManyField(Client, verbose_name="Клиент")
+
+    def __str__(self):
+        return f"Сообщение:{self.message} Клиент:{self.client} Статус:{self.status}"
+
+    class Meta:
+        verbose_name = "Рассылка"
+        verbose_name_plural = "Рассылки"
+        ordering = ["message"]
+
