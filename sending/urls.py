@@ -1,9 +1,8 @@
 from django.urls import path
 from sending.apps import SendingConfig
+from sending.views import SendingMessagesListView
 
 app_name = SendingConfig.name
 
-#TODO "доделать пути к шаблонам"
-# urlpatterns = [
-#     path("", SendingListView.as_view(), name="home"),
-# ]
+
+urlpatterns = [path("", SendingMessagesListView.as_view(), name="home"),]
