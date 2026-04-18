@@ -1,24 +1,19 @@
 {%extends 'base.html'%}
 {% block content %}
-                <!-- Центральная область: список писем -->
+                <!-- Центральная область -->
                 <div class="col-12 col-md-9 col-xl-7 border-end border-start border-light" style="background: #ffffff;">
                     <div class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap">
-                        <h5 class="m-0 fw-semibold" id="folderTitle">Рассылки сообщений</h5>
-                        <div class="d-flex gap-2 mt-2 mt-sm-0">
-                            <button class="btn btn-sm btn-outline-secondary rounded-pill" ><i class="bi bi-calendar2-plus"></i> Создать</button>
+                        <h5 class="m-0 fw-semibold" id="folderTitle">Главная</h5>
 
-                        </div>
                     </div>
                     <div class="scroll-list">
-                        {% for send_mes in sending_messages %}
-                            <p>{{ send_mes }}
-                                <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href=#><i class="bi bi-arrow-repeat"></i> Редактировать</a>
-                                <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href=#><i class="bi bi-trash"></i> Удалить</a>
-                            </p>
 
-                        {% endfor %}
-                    </div>
+                        <p>Общее количество всех созданных рассылок: {{ sending_messages|length }}</p>
+                        <p>Количество активных рассылок: {{ launched_count }}</p>
+                        <p>Количество уникальных получателей: {{ total_clients_count }}</p>
+
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

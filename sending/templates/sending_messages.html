@@ -1,0 +1,41 @@
+{%extends 'base.html'%}
+{% block content %}
+                <!-- Центральная область -->
+                <div class="col-12 col-md-9 col-xl-7 border-end border-start border-light" style="background: #ffffff;">
+                    <div class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap">
+                        <h5 class="m-0 fw-semibold" id="folderTitle">Рассылки сообщений</h5>
+                        <div class="d-flex gap-2 mt-2 mt-sm-0">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" ><i class="bi bi-calendar2-plus"></i> Создать</button>
+
+                        </div>
+                    </div>
+                    <div class="scroll-list">
+                        {% for send_mes in sending_messages %}
+                        {% if send_mes.status == 'launched'%}
+                            <div class="card mb-4 box-shadow">
+                                <div class="card-header">
+                                    <a class="text-decoration-none"  href="{% url 'sending:sending_message' send_mes.pk %}">
+                                     <p>Время: с {{ send_mes.start_time }} по {{ send_mes.end_time }}</p>
+                                     <p>Статус: {{ send_mes.get_status_display }}</p>
+                                     <p>Сообщение {{ send_mes.message }}</p>
+                                        </a>
+                                     <p>
+                                        <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href=#><i class="bi bi-arrow-repeat"></i> Редактировать</a>
+                                        <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href=#><i class="bi bi-trash"></i> Удалить</a>
+                                    </p>
+                                 </div>
+                            </div>
+                        {% endif %}
+                        {% empty %}
+                            <p class="text-muted text-center p-4">Нет запущенных рассылок</p>
+                        {% endfor %}
+                        <p>Общее количество всех созданных рассылок: {{ sending_messages|length }}</p>
+                        <p>Количество активных рассылок: {{ launched_count }}</p>
+                        <p>Количество уникальных получателей:</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
