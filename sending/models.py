@@ -1,3 +1,6 @@
+
+from django.utils import timezone
+
 from django.db import models
 
 
@@ -49,6 +52,23 @@ class SendingMessages(models.Model):
 
     def __str__(self):
         return f"Сообщение:{self.message} Клиент:{self.client} Статус:{self.status}"
+
+    def update_status(self):
+        now_data = timezone.now()
+        print(now_data)
+        if now_data < self.start_time:
+            self.status = 'created'
+        if self.start_time < now_data < self.end_time:
+            self.status = "launched"
+            self.save()
+        elif now_data > self.end_time:
+            self.status = "completed"
+            self.save()
+        else:
+            self.status = "created"
+            self.save()
+
+
 
     class Meta:
         verbose_name = "Рассылка"

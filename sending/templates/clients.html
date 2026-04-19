@@ -5,8 +5,9 @@
     <div class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap">
         <h5 class="m-0 fw-semibold" id="folderTitle">Клиенты</h5>
         <div class="d-flex gap-2 mt-2 mt-sm-0">
-            <button class="btn btn-sm btn-outline-secondary rounded-pill"><i class="bi bi-calendar2-plus"></i> Создать
-            </button>
+            <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_create' %}"><i
+                    class="bi bi-calendar2-plus"></i> Создать
+            </a>
 
         </div>
     </div>
@@ -19,9 +20,9 @@
                 <p>Email: {{ client.email }}</p>
                 </a>
                 <p>
-                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_create' client.pk %}"><i
+                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_update' client.pk %}"><i
                             class="bi bi-arrow-repeat"></i> Редактировать</a>
-                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href=#><i
+                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_delete' client.pk %}"><i
                             class="bi bi-trash"></i> Удалить</a>
                 </p>
             </div>

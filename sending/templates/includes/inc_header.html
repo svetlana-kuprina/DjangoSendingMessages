@@ -1,34 +1,40 @@
-
-            <div class="container-lg px-2 px-md-3 py-3 py-md-4" style="max-width: 1440px;">
-        <div class="mail-app">
-            <div class="row g-0">
-                <!-- Боковая панель меню -->
-                <div class="col-12 col-md-3 col-xl-2 sidebar-nav p-3">
-                    <div class="d-flex flex-column h-100">
-                        <div class="mb-4 mt-2">
-                            <button class="compose-btn" >
-                                <i class="bi bi-pencil-square me-2"></i> Вход
-                            </button>
-                            <button class="compose-btn">
-                                <i class="bi bi-pencil-square me-2"></i> Регистрация
-                            </button>
-                        </div>
-                        <div class="nav flex-column">
-                            <div class="nav-item-custom active" data-folder="inbox">
-                                <i class="bi bi-inbox-fill"></i> <a class="text-decoration-none"  href="{% url 'sending:home' %}">Главная</a>
-                            </div>
-                            <div class="nav-item-custom" data-folder="sent">
-                                <i class="bi bi-send"></i> <a class="text-decoration-none"  href="{% url 'sending:messages' %}">Сообщения</a>
-                            </div>
-                            <div class="nav-item-custom" data-folder="sent">
-                                <i class="bi bi-envelope-at"></i> <a class="text-decoration-none"  href="{% url 'sending:sending_messages' %}">Рассылки</a>
-                            </div>
-                            <div class="nav-item-custom" data-folder="drafts">
-                                <i class="bi bi-file-earmark-text"></i> <a class="text-decoration-none"  href="{% url 'sending:clients' %}"> Клиенты </a>
-                            </div>
-
-                            </div>
-                        <hr class="my-3">
-
+<div class="container-lg px-2 px-md-3 py-3 py-md-4" style="max-width: 1440px;">
+    <div class="mail-app">
+        <div class="row g-0">
+            <!-- Боковая панель меню -->
+            <div class="col-12 col-md-3 col-xl-2 sidebar-nav p-3">
+                <div class="d-flex flex-column h-100">
+                    <div class="mb-4 mt-2">
+                        <button class="compose-btn">
+                            <i class="bi bi-pencil-square me-2"></i> Вход
+                        </button>
+                        <button class="compose-btn">
+                            <i class="bi bi-pencil-square me-2"></i> Регистрация
+                        </button>
                     </div>
+                    <div class="nav flex-column">
+                        <div class="nav-item-custom active" data-folder="inbox">
+                            <i class="bi bi-inbox-fill"></i> <a class="text-decoration-none"
+                                                                href="{% url 'sending:home' %}">Главная</a>
+                        </div>
+                        <div class="nav-item-custom" data-folder="sent">
+                            <i class="bi bi-send"></i> <a class="text-decoration-none"
+                                                          href="{% url 'sending:messages' %}">Сообщения</a>
+                        </div>
+                        <div class="nav-item-custom" data-folder="sent">
+                            <i class="bi bi-envelope-at"></i> <a class="text-decoration-none"
+                                                                 href="{% url 'sending:sending_messages' %}">Рассылки</a>
+                        </div>
+                        <div class="nav-item-custom" data-folder="drafts">
+                            <i class="bi bi-person"></i> <a class="text-decoration-none"
+                                                                       href="{% url 'sending:clients' %}"> Клиенты </a>
+                        </div>
+                        <div class="nav-item-custom" data-folder="drafts">
+                            <i class="bi bi-journal-text"></i> <a class="text-decoration-none"
+                                                                       href=#> Отправки </a>
+                        </div>
+                    </div>
+                    <hr class="my-3">
+
                 </div>
+            </div>

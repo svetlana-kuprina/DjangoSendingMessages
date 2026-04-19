@@ -14,15 +14,18 @@
 
         <div class="card mb-4 box-shadow">
             <div class="card-header">
-                <p>Дата и время начала отправки: {{ sending_message.start_time }} </p>
-                <p>Дата и время окончания отправки: {{ sending_message.end_time }}</p>
-                <p>Статус: {{ sending_message.get_status_display }}</p>
-                <p>Сообщение: {{ sending_message.message }}</p>
-                <p>Получатели: {{ sending_message.client }}</p>
-                <p>
-                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:sending_messages' %}"><i
-                            class="bi bi-arrow-repeat"></i> Назад</a>
-                </p>
+                <form class="row" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <p>
+                        <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill"
+                           href="{% url 'sending:sending_messages' %}"><i
+                                class="bi bi-arrow-repeat"></i> Назад</a>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill"><i
+                                class="bi bi-floppy"></i> Сохранить
+                        </button>
+                    </p>
+                </form>
             </div>
         </div>
     </div>
