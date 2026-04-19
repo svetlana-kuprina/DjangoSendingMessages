@@ -55,7 +55,6 @@ class SendingMessages(models.Model):
 
     def update_status(self):
         now_data = timezone.now()
-        print(now_data)
         if now_data < self.start_time:
             self.status = 'created'
         if self.start_time < now_data < self.end_time:

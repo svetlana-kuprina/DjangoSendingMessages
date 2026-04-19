@@ -18,10 +18,16 @@
                 <p>Дата и время окончания отправки: {{ sending_message.end_time }}</p>
                 <p>Статус: {{ sending_message.get_status_display }}</p>
                 <p>Сообщение: {{ sending_message.message }}</p>
-                <p>Получатели: {{ sending_message.client }}</p>
+                <p>Получатели:</p>
+                {% for cl in sending_message.client.all %}
+                    <p>{{ cl }}</p>
+                {% empty %}
+                    <li>Нет получателей</li>
+                {% endfor %}
                 <p>
                     <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:sending_messages' %}"><i
                             class="bi bi-arrow-repeat"></i> Назад</a>
+
                 </p>
             </div>
         </div>
@@ -30,4 +36,15 @@
 </div>
 </div>
 </div>
+
+                        <form method="post" action="{% url 'sending:sending_message_send' sending_message.pk %}"
+                              class="d-inline"
+                              onsubmit="return confirm('Вы уверены, что хотите отправить рассылку {{ sending_message.client.count }} клиентам?');">
+                            {% csrf_token %}
+                            {{ send_form.as_p }}
+                            <button type="submit" class="btn btn-sm btn-success">
+                                <i class="bi bi-envelope-arrow-down-fill"></i> Отправить сейчас
+                            </button>
+                        </form>
+
 {% endblock %}

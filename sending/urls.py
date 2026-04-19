@@ -2,7 +2,8 @@ from django.urls import path
 from sending.apps import SendingConfig
 from sending.views import SendingMessagesListView, ClientListView, MessageListView, SendingMessagesDetailView, \
     HomeListView, ClientDetailView, ClCreateView, ClUpdateView, ClDeleteView, MessageDetailView, MessageDeleteView, \
-    MessageCreateView, MessageUpdateView, SendingMessageUpdateView, SendingMessageDeleteView, SendingMessageCreateView
+    MessageCreateView, MessageUpdateView, SendingMessageUpdateView, SendingMessageDeleteView, SendingMessageCreateView, \
+    SendingMessageSendView
 
 app_name = SendingConfig.name
 
@@ -10,6 +11,7 @@ urlpatterns = [
     path("", HomeListView.as_view(), name="home"),
     path("sending_messages/", SendingMessagesListView.as_view(), name="sending_messages"),
     path("sending_message/<int:pk>/", SendingMessagesDetailView.as_view(), name="sending_message"),
+    path('send/<int:pk>/', SendingMessageSendView.as_view(), name='sending_message_send'),
     path("sending_message_create/", SendingMessageCreateView.as_view(), name="sending_message_create"),
     path("sending_message_delete/<int:pk>/", SendingMessageDeleteView.as_view(), name="sending_message_delete"),
     path("sending_message_update/<int:pk>/", SendingMessageUpdateView.as_view(), name="sending_message_update"),
