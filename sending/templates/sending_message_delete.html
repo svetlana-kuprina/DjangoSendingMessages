@@ -14,11 +14,8 @@
         <div class="card mb-4 box-shadow">
             <div class="card-header">
                 <form class="row" method="post" enctype="multipart/form-data">
-                    <h5 class="card-title">Действительно хотите удалить рассылку: Время: с {{ sending_message.start_time }} по
-                        {{ sending_message.end_time }}
-                        <p>Статус: {{ sending_message.get_status_display }}</p>
-                        <p>Сообщение {{ sending_message.message }}</p></h5>
-                    {% csrf_token %}
+                    <h5 class="card-title">Действительно хотите удалить рассылку?</h5>
+                        {% csrf_token %}
                     <p>
                         <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill"
                            href="{% url 'sending:sending_messages' %}"><i

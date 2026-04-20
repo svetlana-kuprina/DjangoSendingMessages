@@ -10,6 +10,18 @@
             </a>
         </div>
     </div>
+     {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+            <div class="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="scroll-list">
 
         <div class="card mb-4 box-shadow">
@@ -27,6 +39,15 @@
                 <p>
                     <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:sending_messages' %}"><i
                             class="bi bi-arrow-repeat"></i> Назад</a>
+                    <form method="post" action="{% url 'sending:sending_message_send' sending_message.pk %}"
+                              class="d-inline"
+                              onsubmit="return confirm('Вы уверены, что хотите отправить рассылку {{ sending_message.client.count }} клиентам?');">
+                            {% csrf_token %}
+                            {{ send_form.as_p }}
+                            <button type="submit" class="btn btn-sm btn-success">
+                                <i class="bi bi-envelope-arrow-down-fill"></i> Отправить сейчас
+                            </button>
+                        </form>
 
                 </p>
             </div>
@@ -37,14 +58,6 @@
 </div>
 </div>
 
-                        <form method="post" action="{% url 'sending:sending_message_send' sending_message.pk %}"
-                              class="d-inline"
-                              onsubmit="return confirm('Вы уверены, что хотите отправить рассылку {{ sending_message.client.count }} клиентам?');">
-                            {% csrf_token %}
-                            {{ send_form.as_p }}
-                            <button type="submit" class="btn btn-sm btn-success">
-                                <i class="bi bi-envelope-arrow-down-fill"></i> Отправить сейчас
-                            </button>
-                        </form>
+
 
 {% endblock %}
