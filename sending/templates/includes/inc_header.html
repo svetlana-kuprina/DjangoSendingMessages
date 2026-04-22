@@ -5,12 +5,14 @@
             <div class="col-12 col-md-3 col-xl-2 sidebar-nav p-3">
                 <div class="d-flex flex-column h-100">
                     <div class="mb-4 mt-2">
-                        <button class="compose-btn">
+                        <a class="compose-btn" href="{% url 'users:login' %}">
                             <i class="bi bi-pencil-square me-2"></i> Вход
-                        </button>
-                        <button class="compose-btn">
-                            <i class="bi bi-pencil-square me-2"></i> Регистрация
-                        </button>
+                        </a>
+                    </div>
+                     <div class="mb-4 mt-2">
+                        <a class="compose-btn" href="{% url 'users:register' %}">
+                            <i class="bi bi-pencil-square me-2" ></i> Регистрация
+                        </a>
                     </div>
                     <div class="nav flex-column">
                         <div class="nav-item-custom active" data-folder="inbox">
