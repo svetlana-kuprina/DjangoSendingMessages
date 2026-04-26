@@ -3,7 +3,7 @@ from sending.apps import SendingConfig
 from sending.views import SendingMessagesListView, ClientListView, MessageListView, SendingMessagesDetailView, \
     HomeListView, ClientDetailView, ClCreateView, ClUpdateView, ClDeleteView, MessageDetailView, MessageDeleteView, \
     MessageCreateView, MessageUpdateView, SendingMessageUpdateView, SendingMessageDeleteView, SendingMessageCreateView, \
-    SendingMessageSendView
+    SendingMessageSendView, StatisticsListView
 
 app_name = SendingConfig.name
 
@@ -25,4 +25,5 @@ urlpatterns = [
     path("message_delete/<int:pk>/", MessageDeleteView.as_view(), name="message_delete"),
     path("message_create/", MessageCreateView.as_view(), name="message_create"),
     path("message_update/<int:pk>/", MessageUpdateView.as_view(), name="message_update"),
+    path("statistics", StatisticsListView.as_view(), name="statistics"),
 ]

@@ -24,6 +24,7 @@ pyupgrade = "^3.21.2"
 django = "^6.0.4"
 psycopg2-binary = "^2.9.11"
 pillow = "^12.2.0"
+email-verification = "^0.4.6"
 
 
 [tool.poetry.group.lint.dependencies]

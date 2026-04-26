@@ -392,6 +392,20 @@ argon2 = ["argon2-cffi (>=23.1.0)"]
 bcrypt = ["bcrypt (>=4.1.1)"]
 
 [[package]]
+name = "email-verification"
+version = "0.4.6"
+description = ""
+optional = false
+python-versions = "*"
+files = [
+    {file = "email_verification-0.4.6.tar.gz", hash = "sha256:f976e5965b447228cfbdfc6c6c3d53f4a36a18efc7493d4a7b6b153cf7da34a6"},
+]
+
+[package.dependencies]
+requests = ">=2"
+urllib3 = "2.1.0"
+
+[[package]]
 name = "et-xmlfile"
 version = "2.0.0"
 description = "An implementation of lxml.xmlfile for the standard library"
@@ -1394,22 +1408,21 @@ files = [
 
 [[package]]
 name = "urllib3"
-version = "2.6.3"
+version = "2.1.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.8"
 files = [
-    {file = "urllib3-2.6.3-py3-none-any.whl", hash = "sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4"},
-    {file = "urllib3-2.6.3.tar.gz", hash = "sha256:1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"},
+    {file = "urllib3-2.1.0-py3-none-any.whl", hash = "sha256:55901e917a5896a349ff771be919f8bd99aff50b79fe58fec595eb37bbc56bb3"},
+    {file = "urllib3-2.1.0.tar.gz", hash = "sha256:df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"},
 ]
 
 [package.extras]
-brotli = ["brotli (>=1.2.0)", "brotlicffi (>=1.2.0.0)"]
-h2 = ["h2 (>=4,<5)"]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
-zstd = ["backports-zstd (>=1.0.0)"]
+zstd = ["zstandard (>=0.18.0)"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.14"
-content-hash = "4d53e2ee4fe95e25766d3836271c1ab01464b84d2b29b627974b9aaa56f6f60f"
+content-hash = "4ddc57ea4c423464cf427428b012d7f9fda5dc8be1cb7c1c40fc13a30cf3617d"

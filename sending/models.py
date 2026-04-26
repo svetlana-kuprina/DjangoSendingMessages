@@ -3,6 +3,8 @@ from django.utils import timezone
 
 from django.db import models
 
+from users.models import CustomUser
+
 
 class Client(models.Model):
     """Модель: получатель рассылки (клиент)"""
@@ -10,6 +12,9 @@ class Client(models.Model):
     name = models.CharField(max_length=150, null=True, blank=True, verbose_name="ФИО")
     email = models.EmailField(unique=True, verbose_name="email")
     comment = models.TextField(null=True, blank=True, verbose_name="Комментарии")
+    owner = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, related_name="owner_client", verbose_name="Владелец", blank=True, null=True
+    )
 
     def __str__(self):
         return f"Адрес эл. почты: {self.email}"
@@ -25,6 +30,9 @@ class Message(models.Model):
 
     message_subject = models.CharField(max_length=150, null=True, blank=True, verbose_name="Тема письма")
     body = models.TextField(null=True, blank=True, verbose_name="Тело письма")
+    owner = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, related_name="owner_message", verbose_name="Владелец", blank=True, null=True
+    )
 
     def __str__(self):
         return self.message_subject
@@ -49,6 +57,9 @@ class SendingMessages(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='sending_messages',
                                 verbose_name="Сообщение")
     client = models.ManyToManyField(Client, verbose_name="Клиент")
+    owner = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, related_name="owner_sendingmessages", verbose_name="Владелец", blank=True, null=True
+    )
 
     def __str__(self):
         return f"Сообщение:{self.message} Клиент:{self.client} Статус:{self.status}"
@@ -87,6 +98,9 @@ class MailingAttempts(models.Model):
     server_response = models.TextField(null=True, blank=True, verbose_name="Ответ почтового сервера")
     sending_messages = models.ForeignKey(SendingMessages, on_delete=models.DO_NOTHING, related_name='sending_messages',
                                          verbose_name="Рассылка сообщений")
+    owner = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, related_name="owner_mailingattempts", verbose_name="Владелец", blank=True, null=True
+    )
 
     def __str__(self):
         return f"Рассылка:{self.sending_messages} Дата отправки:{self.attempt_time} Статус:{self.status}"

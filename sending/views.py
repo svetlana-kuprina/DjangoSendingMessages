@@ -1,4 +1,4 @@
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -6,9 +6,9 @@ from django.views import View
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 
-from config import settings
 from sending.forms import SendingMessageSendForm
 from sending.models import SendingMessages, Client, Message, MailingAttempts
+from users.models import CustomUser
 
 
 class HomeListView(ListView):
@@ -29,6 +29,8 @@ class HomeListView(ListView):
         context = super().get_context_data(**kwargs)
         context['launched_count'] = self.object_list.filter(status="launched").count()
         context['total_clients_count'] = Client.objects.count()
+        if self.request.user.is_authenticated:
+            context['owner'] = CustomUser.objects.get(id=self.request.user.id)
         return context
 
 
@@ -79,6 +81,10 @@ class SendingMessageCreateView(CreateView):
             form.add_error('end_time', 'Дата и время окончания должны быть позже даты начала')
             return self.form_invalid(form)
         # Если все проверки пройдены
+        send_mess = form.save()
+        user = self.request.user
+        print(user)
+        send_mess.owner = user
         response = super().form_valid(form)
         return response
 
@@ -87,7 +93,7 @@ class SendingMessageUpdateView(UpdateView):
     model = SendingMessages
     template_name = "sending_message_form.html"
     context_object_name = "sending_message"
-    fields = ("start_time", "end_time", "status", "message", "client")
+    fields = ("start_time", "end_time", "status", "message", "client", "owner")
     success_url = reverse_lazy("sending:sending_messages")
 
 
@@ -117,12 +123,18 @@ class ClCreateView(CreateView):
     fields = ("name", "email", "comment")
     success_url = reverse_lazy("sending:clients")
 
+    def form_valid(self, form):
+        client = form.save()
+        user = self.request.user
+        client.owner = user
+        return super().form_valid(form)
+
 
 class ClUpdateView(UpdateView):
     model = Client
     template_name = "client_form.html"
     context_object_name = "client"
-    fields = ("name", "email", "comment")
+    fields = ("name", "email", "comment", "owner")
     success_url = reverse_lazy("sending:clients")
 
 
@@ -152,12 +164,18 @@ class MessageCreateView(CreateView):
     fields = ("message_subject", "body")
     success_url = reverse_lazy("sending:messages")
 
+    def form_valid(self, form):
+        message = form.save()
+        user = self.request.user
+        message.owner = user
+        return super().form_valid(form)
+
 
 class MessageUpdateView(UpdateView):
     model = Message
     template_name = "message_form.html"
     context_object_name = "message"
-    fields = ("message_subject", "body")
+    fields = ("message_subject", "body", "owner")
     success_url = reverse_lazy("sending:messages")
 
 
@@ -168,7 +186,6 @@ class MessageDeleteView(DeleteView):
     success_url = reverse_lazy("sending:messages")
 
 
-# TODO Черновик надо исправить
 class SendingMessageSendView(View):
     """View для отправки сообщения"""
 
@@ -242,3 +259,29 @@ class SendingMessageSendView(View):
                 attempt_time=timezone.now(),
                 server_response=str(e)
             )
+class StatisticsListView(ListView):
+        model = MailingAttempts
+        template_name = "statistics.html"
+        context_object_name = "statistics"
+
+        def get_queryset(self):
+            """подсчет списка"""
+            queryset = super().get_queryset()
+            if not self.request.session.get('messages_list_viewed', False):
+                self.request.session['messages_list_viewed'] = True
+
+            return queryset
+
+        def get_context_data(self, **kwargs):
+            """Подсчет списка со статусом "launched" и добавление значения в контекст """
+            context = super().get_context_data(**kwargs)
+            if self.request.user.is_authenticated:
+                context['owner'] = CustomUser.objects.get(id=self.request.user.id)
+                #TODO исправить условие что бы считал по пользователям
+                if context['owner'] == self.request.user:
+                    context['Unsuccessful_count'] = self.object_list.filter(status="Unsuccessful").count()
+                    context['successful_count'] = self.object_list.filter(status="successful").count()
+
+
+
+            return context
