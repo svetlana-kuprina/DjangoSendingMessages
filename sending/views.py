@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -16,13 +17,13 @@ class HomeListView(ListView):
     template_name = "home.html"
     context_object_name = "sending_messages"
 
-    def get_queryset(self):
-        """подсчет списка"""
-        queryset = super().get_queryset()
-        if not self.request.session.get('messages_list_viewed', False):
-            self.request.session['messages_list_viewed'] = True
-
-        return queryset
+    # def get_queryset(self):
+    #     """подсчет списка"""
+    #     queryset = super().get_queryset()
+    #     if not self.request.session.get('messages_list_viewed', False):
+    #         self.request.session['messages_list_viewed'] = True
+    #
+    #     return queryset
 
     def get_context_data(self, **kwargs):
         """Подсчет списка со статусом "launched" и добавление значения в контекст """
@@ -201,7 +202,7 @@ class SendingMessageSendView(View):
                     sending_messages=sending_message,
                     status='Unsuccessful',
                     attempt_time=timezone.now(),
-                    server_response = 'Рассылка не активна. Невозможно отправить сообщения.'
+                    server_response='Рассылка не активна. Невозможно отправить сообщения.'
                 )
 
                 return redirect('sending:sending_message', pk=pk)
@@ -245,11 +246,11 @@ class SendingMessageSendView(View):
             send_mail(subject, message.body, from_email, recipient_list)
             # Создаем запись о попытке отправки
             MailingAttempts.objects.create(
-                    sending_messages=sending_message,
-                    status='successful',
-                    attempt_time=timezone.now(),
-                    server_response=f'Письмо успешно отправлено {len(recipient_list)} получателю-(ям)'
-                )
+                sending_messages=sending_message,
+                status='successful',
+                attempt_time=timezone.now(),
+                server_response=f'Письмо успешно отправлено {len(recipient_list)} получателю-(ям)'
+            )
 
         except Exception as e:
             # Обновляем запись об ошибке
@@ -259,29 +260,24 @@ class SendingMessageSendView(View):
                 attempt_time=timezone.now(),
                 server_response=str(e)
             )
-class StatisticsListView(ListView):
-        model = MailingAttempts
-        template_name = "statistics.html"
-        context_object_name = "statistics"
-
-        def get_queryset(self):
-            """подсчет списка"""
-            queryset = super().get_queryset()
-            if not self.request.session.get('messages_list_viewed', False):
-                self.request.session['messages_list_viewed'] = True
-
-            return queryset
-
-        def get_context_data(self, **kwargs):
-            """Подсчет списка со статусом "launched" и добавление значения в контекст """
-            context = super().get_context_data(**kwargs)
-            if self.request.user.is_authenticated:
-                context['owner'] = CustomUser.objects.get(id=self.request.user.id)
-                #TODO исправить условие что бы считал по пользователям
-                if context['owner'] == self.request.user:
-                    context['Unsuccessful_count'] = self.object_list.filter(status="Unsuccessful").count()
-                    context['successful_count'] = self.object_list.filter(status="successful").count()
 
 
+class StatisticsListView(LoginRequiredMixin, ListView):
+    model = MailingAttempts
+    template_name = "statistics.html"
+    context_object_name = "statistics"
 
-            return context
+    def get_queryset(self):
+        """Фильтруем записи, где owner = текущий пользователь"""
+        return super().get_queryset().filter(owner=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Подсчет списка со статусом "launched" и добавление значения в контекст """
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['owner'] = CustomUser.objects.get(id=self.request.user.id)
+            if context['owner'] == self.request.user:
+                context['Unsuccessful_count'] = self.object_list.filter(status="Unsuccessful").count()
+                context['successful_count'] = self.object_list.filter(status="successful").count()
+
+        return context

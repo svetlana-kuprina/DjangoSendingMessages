@@ -44,10 +44,17 @@
                             <i class="bi bi-person"></i> <a class="text-decoration-none"
                                                             href="{% url 'sending:clients' %}"> Клиенты </a>
                         </div>
+                        {% if user.is_authenticated %}
                         <div class="nav-item-custom" data-folder="drafts">
                             <i class="bi bi-journal-text"></i> <a class="text-decoration-none"
                                                                   href="{% url 'sending:statistics' %}"> Статистика </a>
                         </div>
+                        {% else %}
+                        <div class="nav-item-custom" data-folder="drafts">
+                            <i class="bi bi-journal-text"></i> <a class="text-decoration-none"
+                                                                  href="{% url 'users:login' %}"> Статистика </a>
+                        </div>
+                        {% endif %}
                     </div>
                     <hr class="my-3">
 
