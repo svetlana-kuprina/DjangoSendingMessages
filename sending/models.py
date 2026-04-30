@@ -23,6 +23,7 @@ class Client(models.Model):
         verbose_name = "Получатель рассылки"
         verbose_name_plural = "Получатели рассылки"
         ordering = ["email"]
+        permissions = [("manager", "Manager")]
 
 
 class Message(models.Model):
@@ -51,9 +52,10 @@ class SendingMessages(models.Model):
     STATUS_CHOICES = [
         ('created', 'Создана'),
         ('launched', 'Запущена'),
+        ('paused', 'Приостановлена'),
         ('completed', 'Завершена'),
     ]
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='created', verbose_name="Статус")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='created', verbose_name="Статус")
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='sending_messages',
                                 verbose_name="Сообщение")
     client = models.ManyToManyField(Client, verbose_name="Клиент")
@@ -84,6 +86,7 @@ class SendingMessages(models.Model):
         verbose_name = "Рассылка"
         verbose_name_plural = "Рассылки"
         ordering = ["message"]
+        permissions = [("manager", "Manager")]
 
 
 class MailingAttempts(models.Model):

@@ -32,18 +32,35 @@
                             <i class="bi bi-inbox-fill"></i> <a class="text-decoration-none"
                                                                 href="{% url 'sending:home' %}">Главная</a>
                         </div>
+
                         <div class="nav-item-custom" data-folder="sent">
                             <i class="bi bi-send"></i> <a class="text-decoration-none"
                                                           href="{% url 'sending:messages' %}">Сообщения</a>
                         </div>
+
+
+                        {% if user.is_authenticated %}
                         <div class="nav-item-custom" data-folder="sent">
                             <i class="bi bi-envelope-at"></i> <a class="text-decoration-none"
                                                                  href="{% url 'sending:sending_messages' %}">Рассылки</a>
                         </div>
+                        {% else %}
+                        <div class="nav-item-custom" data-folder="sent">
+                            <i class="bi bi-envelope-at"></i> <a class="text-decoration-none"
+                                                                 href="{% url 'users:login' %}">Рассылки</a>
+                        </div>
+                        {% endif %}
+                        {% if user.is_authenticated %}
                         <div class="nav-item-custom" data-folder="drafts">
                             <i class="bi bi-person"></i> <a class="text-decoration-none"
                                                             href="{% url 'sending:clients' %}"> Клиенты </a>
                         </div>
+                        {% else %}
+                        <div class="nav-item-custom" data-folder="drafts">
+                            <i class="bi bi-person"></i> <a class="text-decoration-none"
+                                                            href="{% url 'users:login' %}"> Клиенты </a>
+                        </div>
+                        {% endif %}
                         {% if user.is_authenticated %}
                         <div class="nav-item-custom" data-folder="drafts">
                             <i class="bi bi-journal-text"></i> <a class="text-decoration-none"
@@ -54,6 +71,13 @@
                             <i class="bi bi-journal-text"></i> <a class="text-decoration-none"
                                                                   href="{% url 'users:login' %}"> Статистика </a>
                         </div>
+                        {% endif %}
+                        {% if "sending.manager" in perms  %}
+                        <div class="nav-item-custom" data-folder="drafts">
+                            <i class="bi bi-emoji-sunglasses-fill"></i> <a class="text-decoration-none"
+                                                                  href="{% url 'users:users_list' %}"> Пользователи </a>
+                        </div>
+
                         {% endif %}
                     </div>
                     <hr class="my-3">
