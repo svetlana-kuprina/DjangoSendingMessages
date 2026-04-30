@@ -12,7 +12,11 @@ from django.contrib import messages
 
 from sending.forms import SendingMessageSendForm, SendingMessagesForm, SendingMessagesManForm
 from sending.models import SendingMessages, Client, Message, MailingAttempts
+from sending.services import get_message_cached
 from users.models import CustomUser
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 
 
 class HomeListView(ListView):
@@ -20,13 +24,6 @@ class HomeListView(ListView):
     template_name = "home.html"
     context_object_name = "sending_messages"
 
-    # def get_queryset(self):
-    #     """подсчет списка"""
-    #     queryset = super().get_queryset()
-    #     if not self.request.session.get('messages_list_viewed', False):
-    #         self.request.session['messages_list_viewed'] = True
-    #
-    #     return queryset
 
     def get_context_data(self, **kwargs):
         """Подсчет списка со статусом "launched" и добавление значения в контекст """
@@ -38,6 +35,7 @@ class HomeListView(ListView):
         return context
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class SendingMessagesListView(ListView):
     """Список рассылок"""
     model = SendingMessages
@@ -50,7 +48,6 @@ class SendingMessagesDetailView(LoginRequiredMixin, DetailView):
     model = SendingMessages
     template_name = "sending_message.html"
     context_object_name = "sending_message"
-
 
     def get_object(self, queryset=None):
         """Проверяем статус рассылки с помощью update_status в models"""
@@ -65,8 +62,6 @@ class SendingMessagesDetailView(LoginRequiredMixin, DetailView):
             return obj
         else:
             raise PermissionDenied("У вас нет прав для просмотра.")
-
-
 
     def get_context_data(self, **kwargs):
         """Подключаем форму подтверждения отправки сообщения"""
@@ -137,7 +132,7 @@ class SendingMessageDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Dele
         obj = self.get_object()
         return obj.owner == self.request.user
 
-
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ClientListView(ListView):
     """Список клиентов"""
     model = Client
@@ -150,7 +145,6 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
     template_name = "client.html"
     context_object_name = "client"
-
 
     def get_object(self, queryset=None):
         """Проверка прав доступа"""
@@ -207,9 +201,15 @@ class ClDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
 
 class MessageListView(ListView):
+    """Список сообщений"""
+
     model = Message
     template_name = "messages.html"
     context_object_name = "messages"
+
+    def get_queryset(self):
+        """Кэш"""
+        return get_message_cached()
 
 
 class MessageDetailView(DetailView):
