@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+{% block content %}
+<!-- Центральная область -->
+<div class="col-12 col-md-9 col-xl-7 border-end border-start border-light" style="background: #ffffff;">
+    <div class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap">
+        <h5 class="m-0 fw-semibold" id="folderTitle">Клиенты</h5>
+        <div class="d-flex gap-2 mt-2 mt-sm-0">
+            <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_create' %}"><i
+                    class="bi bi-calendar2-plus"></i> Создать
+            </a>
+
+        </div>
+    </div>
+    <div class="scroll-list">
+        {% for client in clients %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <a class="text-decoration-none"  href="{% url 'sending:client' client.pk %}">
+                <p>ФИО: {{ client.name }} </p>
+                <p>Email: {{ client.email }}</p>
+                </a>
+                <p>
+                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_update' client.pk %}"><i
+                            class="bi bi-arrow-repeat"></i> Редактировать</a>
+                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'sending:client_delete' client.pk %}"><i
+                            class="bi bi-trash"></i> Удалить</a>
+                </p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center p-4">Нет клиентов</p>
+        {% endfor %}
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
