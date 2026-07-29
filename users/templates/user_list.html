@@ -1,0 +1,31 @@
+{%extends 'base.html'%}
+{% block content %}
+<!-- Центральная область -->
+<div class="col-12 col-md-9 col-xl-7 border-end border-start border-light" style="background: #ffffff;">
+    <div class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap">
+        <h5 class="m-0 fw-semibold" id="folderTitle">Сообщения</h5>
+
+    </div>
+    <div class="scroll-list">
+        {% for user in user_list %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <a class="text-decoration-none"  href="{% url 'users:user_detail' user.pk %}">
+                    <p>Email: {{ user.email }} </p>
+                    <p>ФИО: {{ user.username }}</p>
+                </a>
+                <p>
+                    <a role="button" class="btn btn-sm btn-outline-secondary rounded-pill" href="{% url 'users:user_update' user.pk %}"><i
+                            class="bi bi-arrow-repeat"></i> Блокировать</a>
+                </p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center p-4">Нет сообщений</p>
+        {% endfor %}
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

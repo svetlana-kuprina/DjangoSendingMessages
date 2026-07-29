@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Рассылки сообщений</title>
+    <!-- Bootstrap 5 CSS + Icons + основной стиль -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons (для иконок) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts для аккуратного текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #f2f5f9;
+            overflow-x: hidden;
+        }
+        /* кастомная обертка для имитации desktop-приложения */
+        .mail-app {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            margin: 20px auto;
+            transition: all 0.2s;
+        }
+        /* левая панель навигации (стиль inbox) */
+        .sidebar-nav {
+            background: #fefefe;
+            border-right: 1px solid #e9edf2;
+            height: 100%;
+        }
+        .compose-btn {
+            background: #0b57d0;
+            color: white;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border: none;
+            width: 100%;
+        }
+        .compose-btn:hover {
+            background: #0842a0;
+            color: white;
+        }
+        .nav-item-custom {
+            padding: 10px 16px;
+            margin: 2px 8px;
+            border-radius: 28px;
+            font-weight: 500;
+            color: #1e2a3e;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav-item-custom i {
+            margin-right: 14px;
+            font-size: 1.3rem;
+            vertical-align: middle;
+        }
+        .nav-item-custom.active {
+            background: #e8f0fe;
+            color: #0b57d0;
+        }
+        .nav-item-custom:hover:not(.active) {
+            background: #f1f3f7;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container-lg px-2 px-md-3 py-3 py-md-4" style="max-width: 1440px;">
+        <div class="mail-app">
+            <div class="row g-0">
+                <!-- Боковая панель (Входящие, Отправленные, Черновики и т.д.) -->
+                <div class="col-12 col-md-3 col-xl-2 sidebar-nav p-3">
+                    <div class="d-flex flex-column h-100">
+                        <div class="mb-4 mt-2">
+                            <button class="compose-btn" >
+                                <i class="bi bi-pencil-square me-2"></i> Вход
+                            </button>
+                            <button class="compose-btn">
+                                <i class="bi bi-pencil-square me-2"></i> Регистрация
+                            </button>
+                        </div>
+                        <div class="nav flex-column">
+                            <div class="nav-item-custom active" data-folder="inbox">
+                                <i class="bi bi-inbox-fill"></i> <span>Рассылки</span>
+                            </div>
+                            <div class="nav-item-custom" data-folder="sent">
+                                <i class="bi bi-send"></i> <span>Сообщения</span>
+                            </div>
+                            <div class="nav-item-custom" data-folder="drafts">
+                                <i class="bi bi-file-earmark-text"></i> <span>Клиенты</span>
+                            </div>
+                            <div class="nav-item-custom" data-folder="spam">
+                                <i class="bi bi-exclamation-triangle"></i> <span>Спам</span>
+                            </div>
+                            </div>
+                        <hr class="my-3">
+
+                    </div>
+                </div>
+
+                <!-- Центральная область: список писем -->
+                <div class="col-12 col-md-9 col-xl-7 border-end border-start border-light" style="background: #ffffff;">
+                    <div class="p-3 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap">
+                        <h5 class="m-0 fw-semibold" id="folderTitle">Рассылки сообщений</h5>
+                        <div class="d-flex gap-2 mt-2 mt-sm-0">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" ><i class="bi bi-calendar2-plus"></i> Создать</button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" ><i class="bi bi-arrow-repeat"></i> Редактировать</button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" ><i class="bi bi-trash"></i> Удалить</button>
+                        </div>
+                    </div>
+                    <div class="scroll-list" id="emailListContainer">
+                    </div>
+                        </div>
+                </div>
+            </div>
+        </div>
